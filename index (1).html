@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPACTO SOCIAL | 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    
+    <style>
+        :root {
+            --bg: #050000; /* Um preto levemente avermelhado */
+            --accent: #ff0000;
+            --accent-glow: rgba(255, 0, 0, 0.15);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --card-bg: rgba(10, 10, 10, 0.8);
+            --border: #1a1a1a;
+            --transition: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg);
+            /* FADES VERMELHOS DISCRETOS NO FUNDO */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 0, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 50%, rgba(180, 0, 0, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 20% 80%, rgba(255, 0, 0, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Removido os pseudo-elementos antigos para usar o gradiente dinâmico do body */
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header span { 
+            font-family: 'Syncopate'; font-size: 0.8rem; letter-spacing: 0.5em; 
+            color: var(--accent); margin-bottom: 20px; text-shadow: 0 0 10px var(--accent);
+        }
+
+        h1 { 
+            font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; letter-spacing: -0.04em; 
+            line-height: 1; margin-bottom: 40px;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .counter-box {
+            background: rgba(255, 0, 0, 0.03);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .counter-number {
+            font-family: 'Syncopate'; font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--accent); display: block; 
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .btn-main {
+            background: transparent; color: var(--text-main); padding: 18px 40px;
+            font-weight: 700; text-transform: uppercase; font-size: 0.75rem;
+            letter-spacing: 2px; border: 1px solid var(--text-main);
+            cursor: pointer; transition: 0.4s var(--transition);
+        }
+
+        .btn-main:hover { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); }
+
+        section { padding: 80px 0; }
+        .section-label { font-family: 'Syncopate'; font-size: 0.7rem; color: var(--accent); margin-bottom: 40px; display: block; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-menu { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        
+        .tab-btn {
+            background: transparent; border: 1px solid var(--border);
+            padding: 15px; text-align: left; cursor: pointer; transition: 0.2s;
+            color: var(--text-dim);
+        }
+
+        .tab-btn.active { border-left: 4px solid var(--accent); background: rgba(255,255,255,0.02); color: #fff; }
+        .tab-btn h4 { font-size: 0.8rem; text-transform: uppercase; }
+
+        .chart-container { position: relative; min-height: 350px; width: 100%; }
+
+        .quiz-box {
+            background: var(--card-bg); padding: 40px;
+            border: 1px solid var(--border); position: relative; overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        #timer-bar {
+            position: absolute; top: 0; left: 0; height: 4px;
+            background: var(--accent); width: 100%; transition: width 1s linear;
+        }
+
+        .opt-btn {
+            display: block; width: 100%; padding: 18px;
+            background: rgba(10, 10, 10, 0.8); border: 1px solid var(--border);
+            color: white; text-align: left; margin-bottom: 10px;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        .opt-btn:hover { border-color: var(--accent); transform: translateX(10px); background: rgba(255,0,0,0.05); }
+        .correct { background: #00ff8822 !important; border-color: #00ff88 !important; }
+        .wrong { background: #ff000022 !important; border-color: #ff0000 !important; }
+
+        footer { padding: 60px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
+
+        .info-grid-modern {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .interactive-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .interactive-card:hover {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.05);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+        }
+
+        .interactive-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff0000;
+            transition: width 0.5s ease;
+        }
+
+        .interactive-card:hover::after { width: 100%; }
+
+        .interactive-card h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.8rem;
+            color: #ff0000;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .interactive-card p {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .interactive-card:hover p { color: #ffffff; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+            footer div:last-child { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+   
+
+    <div class="container">
+        <header>
+            <span class="reveal">MONITORAMENTO GLOBAL • 2026</span>
+            <h1 class="reveal">PONTO DE<br>INFLEXÃO</h1>
+            
+            <div class="counter-box reveal">
+                <p style="font-size: 0.6rem; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim);">ESTIMATIVA DE FEMINICÍDIOS EM 2026</p>
+                <span id="fem-counter" class="counter-number">--</span>
+                <p id="timer-label" style="font-size: 0.6rem; color: var(--text-dim); margin-top: 10px;">PRÓXIMO REGISTRO EM: 02:00</p>
+            </div>
+
+            <button class="btn-main reveal" onclick="document.getElementById('stats').scrollIntoView()">Analisar Dados</button>
+        </header>
+
+        <section id="stats">
+            <span class="section-label reveal">                Dados Dinâmicos</span>
+            <div class="dashboard-grid reveal">
+                
+                <div class="chart-card">
+                    <h4 style="margin-bottom: 10px; font-size: 0.8rem; color: #fff;">TIPOS DE AGRESSÃO FÍSICA</h4>
+                    <p style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 20px;">Clique ou passe o mouse para expandir os dados.</p>
+                    <div class="chart-container">
+                        <canvas id="pizzaChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="tab-menu">
+                        <button class="tab-btn active" onclick="updateBar(0, this)">
+                            <h4>Evolução Mensal</h4>
+                            <p>Casos por 100 mil mulheres.</p>
+                        </button>
+                        <button class="tab-btn" onclick="updateBar(1, this)">
+                            <h4>Cenário do Crime</h4>
+                            <p>Locais de maior incidência.</p>
+                        </button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="info-section">
+    <style>
+        .info-grid-modern {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .interactive-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        /* Efeito de brilho ao passar o mouse */
+        .interactive-card:hover {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.05);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.1);
+        }
+
+        /* Barra de progresso animada no card */
+        .interactive-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff0000;
+            transition: width 0.5s ease;
+        }
+
+        .interactive-card:hover::after {
+            width: 100%;
+        }
+
+        .interactive-card h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.8rem;
+            color: #ff0000;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .interactive-card p {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .interactive-card:hover p {
+            color: #ffffff;
+        }
+
+        /* Animação de entrada (Fade-in Up) */
+        .reveal-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <div class="info-grid-modern">
+        <div class="interactive-card reveal-card" style="animation-delay: 0.1s;">
+            <h3>CICLO DA VIOLÊNCIA</h3>
+            <p>O abuso não começa físico. Ele evolui da tensão para o incidente e a falsa "lua de mel". Identificar o padrão é o primeiro passo para a ruptura.</p>
+        </div>
+
+        <div class="interactive-card reveal-card" style="animation-delay: 0.2s;">
+            <h3>ISOLAMENTO SOCIAL</h3>
+            <p>Em 2026, 72% dos casos graves ocorrem onde a vítima é afastada de redes de apoio. O silêncio é a ferramenta principal do agressor.</p>
+        </div>
+
+        <div class="interactive-card reveal-card" style="animation-delay: 0.3s;">
+            <h3>CANAL DE DENÚNCIA</h3>
+            <p>O Ligue 180 é gratuito, anônimo e vital. Em 2026, o atendimento foi digitalizado para garantir proteção imediata via GPS em casos críticos.</p>
+        </div>
+    </div>
+</div>
+
+        
+        <section>
+            <span class="section-label reveal">Teste de Consciência</span>
+            <div class="quiz-box reveal">
+                <div id="timer-bar"></div>
+                <div id="quiz-start" style="text-align: center;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 20px; font-family: 'Syncopate';">INICIAR PROTOCOLO</h2>
+                    <p style="color: var(--text-dim); margin-bottom: 30px;">10 Questões Críticas • 30 Segundos • Dados 2026</p>
+                    <button class="btn-main" onclick="startQuiz()">Começar</button>
+                </div>
+
+                <div id="quiz-active" style="display:none">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <span id="q-count" style="color: var(--accent); font-weight: 700;">QUESTÃO 01/10</span>
+                        <span id="q-timer">30s</span>
+                    </div>
+                    <p id="q-text" style="font-size: 1.2rem; margin-bottom: 30px; font-weight: 700; color: #fff;"></p>
+                    <div id="opt-grid"></div>
+                </div>
+
+                <div id="quiz-end" style="display:none; text-align: center;">
+                    <h2 style="font-family: 'Syncopate'; font-size: 1rem; margin-bottom: 10px;">PONTUAÇÃO</h2>
+                    <div id="final-score" style="font-size: 5rem; font-weight: 900; color: var(--accent);">0</div>
+                    <button class="btn-main" style="margin-top: 30px;" onclick="location.reload()">Refazer</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div>
+                <p>DESENVOLVIMENTO:</p>
+                <p style="color: white; font-weight: 700;">G. Moreira, R. Lucas, K. Cesar, H. Victor, G. Egídio</p>
+            </div>
+            <div style="text-align: right;">
+                <p>© 2026 PROJETO IMPACTO</p>
+                <p style="color: white; font-weight: 700;">DADOS EM TEMPO REAL</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- 1. FEMINICIDIÔMETRO (Limpo) ---
+        const START_2026 = new Date("2026-01-01T00:00:00").getTime();
+        const MS_PER_CASE = 120000; 
+
+        function updateCounter() {
+            const now = new Date().getTime();
+            const elapsed = now - START_2026;
+            const cases = Math.floor(elapsed / MS_PER_CASE);
+            document.getElementById('fem-counter').innerText = cases.toLocaleString();
+
+            let remaining = MS_PER_CASE - (elapsed % MS_PER_CASE);
+            let m = Math.floor(remaining / 60000);
+            let s = Math.floor((remaining % 60000) / 1000);
+            document.getElementById('timer-label').innerText = `PRÓXIMO REGISTRO EM: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // --- 2. GRÁFICO PIZZA (Animação de Offset restaurada) ---
+        const pizzaCtx = document.getElementById('pizzaChart').getContext('2d');
+        new Chart(pizzaCtx, {
+            type: 'pie', // Alterado para Pie para efeito de offset mais visível
+            data: {
+                labels: ['Espancamento', 'Objetos/Armas', 'Sufocamento', 'Queimaduras', 'Outros'],
+                datasets: [{
+                    data: [50, 25, 15, 5, 5],
+                    backgroundColor: ['#ff0000', '#cc0000', '#990000', '#660000', '#330000'],
+                    borderWidth: 2,
+                    borderColor: '#000',
+                    hoverOffset: 30 // Esse é o efeito que você gostou! As fatias saem do gráfico.
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#888', font: { size: 11 } } }
+                }
+            }
+        });
+
+        // --- 3. GRÁFICO BARRAS ---
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const datasets = [
+            { labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'], data: [1.2, 1.4, 1.9, 1.6, 2.1] },
+            { labels: ['Casa', 'Rua', 'Trabalho', 'Outros'], data: [68, 18, 8, 6] }
+        ];
+
+        let barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: datasets[0].labels,
+                datasets: [{ data: datasets[0].data, backgroundColor: '#ff0000' }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: { 
+                    y: { grid: { color: '#1a1a1a' }, ticks: { color: '#666' } },
+                    x: { ticks: { color: '#fff' }, grid: { display: false } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        function updateBar(idx, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            barChart.data.labels = datasets[idx].labels;
+            barChart.data.datasets[0].data = datasets[idx].data;
+            barChart.update();
+        }
+
+        // --- 4. QUIZ ---
+        const questions = [
+            { q: "Qual o intervalo de um feminicídio no mundo em 2026?", a: ["1 hora", "2 minutos", "10 minutos"], c: 1 },
+            { q: "Onde ocorre 68% das agressões físicas contra mulheres?", a: ["Residência", "Rua", "Trabalho"], c: 0 },
+            { q: "Qual o número principal para denúncias no Brasil?", a: ["190", "153", "180"], c: 2 },
+            { q: "A violência psicológica também é considerada crime?", a: ["Não", "Sim", "Só se houver agressão física"], c: 1 },
+            { q: "A cada quanto tempo uma mulher é agredida no Brasil?", a: ["2 segundos", "2 minutos", "2 horas"], c: 0 },
+            { q: "Quem são os principais autores de feminicídios?", a: ["Desconhecidos", "Parceiros ou ex-parceiros", "Ladrões"], c: 1 },
+            { q: "O feminicídio é um crime de qual tipo?", a: ["Comum", "Hediondo", "Culposo"], c: 1 },
+            { q: "Qual a fase do ciclo da violência que precede a agressão?", a: ["Lua de mel", "Aumento da tensão", "Arrependimento"], c: 1 },
+            { q: "A Medida Protetiva serve para:", a: ["Multar o agressor", "Afastar o agressor da vítima", "Prender a vítima"], c: 1 },
+            { q: "Qual o maior fator de subnotificação?", a: ["Falta de leis", "Medo e dependência", "Falta de internet"], c: 1 }
+        ];
+
+        let cur = 0, score = 0, timer, timeLeft = 30;
+
+        function startQuiz() {
+            document.getElementById('quiz-start').style.display = 'none';
+            document.getElementById('quiz-active').style.display = 'block';
+            loadQ();
+        }
+
+        function loadQ() {
+            if(cur >= questions.length) return endQuiz();
+            clearInterval(timer);
+            timeLeft = 30;
+            updateUI();
+            const q = questions[cur];
+            document.getElementById('q-count').innerText = `QUESTÃO ${cur+1}/10`;
+            document.getElementById('q-text').innerText = q.q;
+            const grid = document.getElementById('opt-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.innerText = opt;
+                b.onclick = () => check(i);
+                grid.appendChild(b);
+            });
+            timer = setInterval(() => {
+                timeLeft--;
+                updateUI();
+                if(timeLeft <= 0) check(-1);
+            }, 1000);
+        }
+
+        function updateUI() {
+            document.getElementById('q-timer').innerText = timeLeft + 's';
+            document.getElementById('timer-bar').style.width = (timeLeft / 30) * 100 + '%';
+        }
+
+        function check(idx) {
+            clearInterval(timer);
+            const btns = document.querySelectorAll('.opt-btn');
+            const correctIdx = questions[cur].c;
+            if(idx === correctIdx) {
+                btns[idx].classList.add('correct');
+                score += (timeLeft * 30) + 100;
+            } else {
+                if(idx !== -1) btns[idx].classList.add('wrong');
+                btns[correctIdx].classList.add('correct');
+            }
+            setTimeout(() => { cur++; loadQ(); }, 1200);
+        }
+
+        function endQuiz() {
+            document.getElementById('quiz-active').style.display = 'none';
+            document.getElementById('quiz-end').style.display = 'block';
+            document.getElementById('final-score').innerText = score;
+        }
+
+        ScrollReveal().reveal('.reveal', { distance: '40px', duration: 800, interval: 80, origin: 'bottom', reset: false });
+    </script>
+</body>
+</html>
