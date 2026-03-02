@@ -213,15 +213,156 @@
             footer { flex-direction: column; gap: 20px; text-align: center; }
             footer div:last-child { text-align: center; }
         }
+    /* =============================
+   GLOW DINÂMICO GLOBAL
+============================= */
+
+#bg-glow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    background:
+        radial-gradient(
+            circle 320px at var(--x,50%) var(--y,50%),
+            rgba(255,0,0,0.12),
+            transparent 60%
+        );
+    transition:background .08s linear;
+}
+    /* =============================
+   BOTÃO MAGNÉTICO SUAVE
+============================= */
+
+.btn-main{
+    position:relative;
+    overflow:hidden;
+}
+
+.btn-main::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:120%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent
+    );
+    transition:.6s;
+}
+
+.btn-main:hover::after{
+    left:120%;
+}
+
+
+/* =============================
+   CARDS 3D LEVE
+============================= */
+
+.interactive-card{
+    transform-style:preserve-3d;
+    will-change:transform;
+}
+    #creditos {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 0, 0, 0.98); /* Quase preto sólido */
+    color: white;
+    display: none;
+    overflow: hidden;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+}
+
+.fechar-creditos {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 10px 20px;
+    font-family: 'Syncopate';
+    font-size: 0.7rem;
+    cursor: pointer;
+    z-index: 10001;
+    transition: 0.3s;
+}
+
+.fechar-creditos:hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px var(--accent);
+}
+
+.creditos-conteudo {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 100%; /* Começa fora da tela embaixo */
+}
+
+/* Animação de subida suave */
+.animar-subida {
+    animation: subir-creditos 30s linear forwards;
+}
+
+.creditos-conteudo h1 {
+    font-family: 'Syncopate';
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin: 20px 0 60px 0;
+    letter-spacing: 15px;
+    color: #fff;
+}
+
+.creditos-secao {
+    margin-bottom: 60px;
+}
+
+.creditos-secao h2 {
+    font-family: 'Syncopate';
+    color: var(--accent);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.creditos-secao p {
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin: 10px 0;
+    letter-spacing: 2px;
+}
+
+.creditos-final {
+    margin-top: 100px;
+    padding-bottom: 100px;
+    font-family: 'Syncopate';
+    font-size: 0.8rem;
+}
+
+@keyframes subir-creditos {
+    from { top: 100%; }
+    to { top: -150%; } /* Ajuste aqui dependendo do tamanho do seu texto */
+}
+
     </style>
 </head>
 <body>
    
-
+<div id="bg-glow"></div>
     <div class="container">
         <header>
-            <span class="reveal">MONITORAMENTO GLOBAL • 2026</span>
-            <h1 class="reveal">PONTO DE<br>INFLEXÃO</h1>
+            <span class="reveal">PROJETO CONSCIENTIZAÇÃO • 2026</span>
+            <h1 class="reveal">CONTRA A <br>VIOLÊNCIA FÍSICA</h1>
             
             <div class="counter-box reveal">
                 <p style="font-size: 0.6rem; letter-spacing: 2px; margin-bottom: 10px; color: var(--text-dim);">ESTIMATIVA DE FEMINICÍDIOS EM 2026</p>
@@ -338,8 +479,37 @@
                 transform: translateY(0);
             }
         }
-    </style>
+            .impacto{
+text-align:center;
+padding:120px 20px;
+}
 
+.impacto-grid{
+display:flex;
+gap:40px;
+justify-content:center;
+flex-wrap:wrap;
+margin-top:50px;
+}
+
+.count{
+font-size:4rem;
+color:#ff0000;
+font-weight:900;
+}
+    </style>
+<section class="impacto reveal">
+
+<h2>Realidade em números</h2>
+
+<div class="impacto-grid">
+<div><span class="count" data-target="68">0</span>%<p>das agressões ocorrem dentro de casa</p></div>
+<div><span class="count" data-target="2">0</span>min<p>entre casos registrados</p></div>
+<div><span class="count" data-target="72">0</span>%<p>envolvem parceiros ou ex</p></div>
+</div>
+
+</section>
+</section>
     <div class="info-grid-modern">
         <div class="interactive-card reveal-card" style="animation-delay: 0.1s;">
             <h3>CICLO DA VIOLÊNCIA</h3>
@@ -358,7 +528,39 @@
     </div>
 </div>
 
+        <section id="conscientizacao" style="background: rgba(255, 0, 0, 0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+        <span class="section-label reveal">PROJETO ESCOLAR • SALA 2 REG 6</span>
         
+        <div class="dashboard-grid reveal">
+            <div class="chart-card" style="padding: 10px; border-color: rgba(255,0,0,0.5);">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--accent);">
+                    <iframe 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+                        src="https://www.youtube.com/embed/mg92G5wBWus" 
+                        title="Diga não à violência doméstica" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="interactive-card" style="display: flex; flex-direction: column; justify-content: center;">
+                <h3 style="color: var(--accent); font-family: 'Syncopate'; font-size: 0.9rem;">"HOJE EU RECEBI FLORES"</h3>
+                <p style="margin-bottom: 20px; font-style: italic; color: #ccc; font-size: 0.95rem;">
+                    O vídeo narra a progressão silenciosa da violência: o que começa com "flores de desculpa" termina em um funeral. Uma mensagem brutal sobre como o ciclo da agressão não para por conta própria.
+                </p>
+                
+                <h3 style="color: var(--text-main); font-family: 'Syncopate'; font-size: 0.7rem; margin-top: 10px;">NOSSO COMPROMISSO</h3>
+                <p style="font-size: 0.9rem; line-height: 1.8;">
+                    Somos a equipe da <strong>Sala 2 Reg 6</strong> e este projeto escolar nasce da necessidade urgente de conscientização. Nosso objetivo é mostrar que a violência doméstica não é um problema privado, mas um alerta público. <strong>É preciso identificar os sinais e denunciar agora. Não espere que seja tarde demais.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
         <section>
             <span class="section-label reveal">Teste de Consciência</span>
             <div class="quiz-box reveal">
@@ -385,20 +587,199 @@
                 </div>
             </div>
         </section>
+<div style="text-align: center; margin-top: 50px;">
+    <button onclick="abrirCreditos()" class="btn-main reveal">
+        <i class="fa-solid fa-film" style="margin-right: 10px;"></i> Ver Créditos
+    </button>
+</div>
+
+<div id="creditos">
+    <button class="fechar-creditos" onclick="fecharCreditos()">&times; FECHAR</button>
+    
+    <div class="creditos-conteudo" id="creditos-scroll">
+        <span style="color: var(--accent); font-family: 'Syncopate'; letter-spacing: 10px;">PROJETO IMPACTO 2026</span>
+        <h1>CRÉDITOS</h1>
+
+        <div class="creditos-secao">
+            <h2><i class="fa-solid fa-screwdriver-wrench"></i> FERRAMENTAS</h2>
+            <p>Gemini 1.5 Pro</p>
+            <p>Visual Studio Code</p>
+            <p>Web Code Engine</p>
+            <p>GitHub Enterprise</p>
+        </div>
+
+        <div class="creditos-secao">
+            <h2><i class="fa-solid fa-code"></i> DESENVOLVIMENTO CORE</h2>
+            <p>Kaio Cesar</p>
+        </div>
+
+        <div class="creditos-secao">
+            <h2><i class="fa-solid fa-magnifying-glass"></i> INTELIGÊNCIA E PESQUISA</h2>
+            <p>G. Moreira</p>
+            <p>R. Lucas</p>
+            <p>K. Cesar</p>
+            <p>H. Victor</p>
+            <p>G. Egídio</p>
+        </div>
+
+        <div class="creditos-secao">
+            <h2><i class="fa-solid fa-microphone"></i> APRESENTAÇÃO</h2>
+            <p>Kaio Cesar</p>
+            <p>G. Moreira</p>
+        </div>
+
+        <div class="creditos-secao">
+            <h2><i class="fa-solid fa-globe"></i> FONTES DOCUMENTAIS</h2>
+            <p>Wikipedia.org</p>
+            <p>MDN Web Docs</p>
+            <p>Stack Overflow</p>
+            <p>W3Schools</p>
+        </div>
+
+        <div class="creditos-final">
+            <p>© 2026 — Todos os direitos reservados</p>
+            <div style="width: 50px; height: 2px; background: var(--accent); margin: 20px auto;"></div>
+            <p style="font-size: 0.7rem; opacity: 0.5;">SISTEMA OPERACIONAL TERMINAL v4.0</p>
+        </div>
+    </div>
+</div>
 
         <footer>
-            <div>
-                <p>DESENVOLVIMENTO:</p>
-                <p style="color: white; font-weight: 700;">G. Moreira, R. Lucas, K. Cesar, H. Victor, G. Egídio</p>
-            </div>
+            
             <div style="text-align: right;">
-                <p>© 2026 PROJETO IMPACTO</p>
+                <p>© 2026 PROJETO - VIOLENCIA FISICA - 2 REG 6</p>
                 <p style="color: white; font-weight: 700;">DADOS EM TEMPO REAL</p>
             </div>
         </footer>
     </div>
 
     <script>
+function abrirCreditos() {
+    const painel = document.getElementById("creditos");
+    const conteudo = document.getElementById("creditos-scroll");
+    
+    painel.style.display = "block";
+    conteudo.classList.add("animar-subida");
+    
+    // Oculta o cursor durante os créditos para maior imersão
+    if(document.getElementById('cursor')) document.getElementById('cursor').style.display = 'none';
+}
+
+function fecharCreditos() {
+    const painel = document.getElementById("creditos");
+    const conteudo = document.getElementById("creditos-scroll");
+    
+    painel.style.display = "none";
+    conteudo.classList.remove("animar-subida"); // Reseta a animação para a próxima vez
+    
+    if(document.getElementById('cursor')) document.getElementById('cursor').style.display = 'block';
+}
+
+const counters=document.querySelectorAll(".count");
+
+const counterObs=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+const el=entry.target;
+let start=0;
+const end=+el.dataset.target;
+
+const update=()=>{
+start+=Math.ceil(end/60);
+if(start>=end) start=end;
+el.innerText=start;
+if(start<end) requestAnimationFrame(update);
+};
+
+update();
+counterObs.unobserve(el);
+}
+});
+},{threshold:.7});
+
+counters.forEach(c=>counterObs.observe(c));
+    const nar=document.querySelectorAll(".nar");
+
+const narObs=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+setTimeout(()=>e.target.classList.add("show"),200);
+}
+});
+},{threshold:.6});
+
+nar.forEach(n=>narObs.observe(n));
+    /* =================================
+   GLOW SEGUINDO O MOUSE
+================================= */
+
+document.addEventListener("mousemove",e=>{
+    document.documentElement.style
+        .setProperty('--x',e.clientX+'px');
+
+    document.documentElement.style
+        .setProperty('--y',e.clientY+'px');
+});
+
+
+/* =================================
+   PARALLAX SUAVE DO FUNDO
+================================= */
+
+window.addEventListener("scroll",()=>{
+    document.body.style.backgroundPosition =
+        `center ${window.scrollY*0.15}px`;
+});
+
+
+/* =================================
+   BOTÃO MAGNÉTICO
+================================= */
+
+document.querySelectorAll(".btn-main").forEach(btn=>{
+
+    btn.addEventListener("mousemove",e=>{
+        const rect=btn.getBoundingClientRect();
+
+        const x=e.clientX-rect.left-rect.width/2;
+        const y=e.clientY-rect.top-rect.height/2;
+
+        btn.style.transform=
+            `translate(${x*0.15}px,${y*0.15}px)`;
+    });
+
+    btn.addEventListener("mouseleave",()=>{
+        btn.style.transform="translate(0,0)";
+    });
+
+});
+
+
+/* =================================
+   CARDS 3D INTERATIVOS
+================================= */
+
+document.querySelectorAll(".interactive-card").forEach(card=>{
+
+    card.addEventListener("mousemove",e=>{
+
+        const rect=card.getBoundingClientRect();
+
+        const x=(e.clientX-rect.left)/rect.width-0.5;
+        const y=(e.clientY-rect.top)/rect.height-0.5;
+
+        card.style.transform=
+            `rotateY(${x*8}deg)
+             rotateX(${-y*8}deg)
+             translateY(-10px)`;
+    });
+
+    card.addEventListener("mouseleave",()=>{
+        card.style.transform=
+            "rotateY(0) rotateX(0) translateY(0)";
+    });
+
+});
         // --- 1. FEMINICIDIÔMETRO (Limpo) ---
         const START_2026 = new Date("2026-01-01T00:00:00").getTime();
         const MS_PER_CASE = 120000; 
@@ -422,7 +803,13 @@
         new Chart(pizzaCtx, {
             type: 'pie', // Alterado para Pie para efeito de offset mais visível
             data: {
-                labels: ['Espancamento', 'Objetos/Armas', 'Sufocamento', 'Queimaduras', 'Outros'],
+                labels: [
+'Violência Física',
+'Violência Psicológica',
+'Violência Moral',
+'Violência Patrimonial',
+'Violência Sexual'
+],
                 datasets: [{
                     data: [50, 25, 15, 5, 5],
                     backgroundColor: ['#ff0000', '#cc0000', '#990000', '#660000', '#330000'],
